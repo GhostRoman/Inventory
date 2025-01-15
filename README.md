@@ -8,7 +8,7 @@
 
 1. Перейдите в директорию проекта:
    
-   cd inventory
+   cd Inventory-master
 3. Установите зависимости:
    
    npm install
