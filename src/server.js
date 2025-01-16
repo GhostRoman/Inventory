@@ -3,6 +3,9 @@ import http from 'http';
 import {Server} from 'socket.io';
 import path from 'path';
 import {fileURLToPath} from 'url';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Определяем __dirname для ES-модулей
 const __filename = fileURLToPath(import.meta.url);

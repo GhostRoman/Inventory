@@ -1,23 +1,24 @@
-# Используем Node.js как базовый образ
+# Используем официальный Node.js образ
 FROM node:18
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json
+# Копируем package.json и package-lock.json для установки зависимостей
 COPY package*.json ./
 
-# Устанавливаем зависимости, включая optional dependencies
-RUN npm install --optional
+# Устанавливаем зависимости
+RUN npm install
 
-# Копируем остальные файлы приложения
+# Копируем весь проект
 COPY . .
 
-# Собираем фронтенд часть
+# Собираем фронтенд
+WORKDIR /app
 RUN npm run build
 
-# Устанавливаем порт, который будет использовать контейнер
-EXPOSE 3000
+# Открываем порты для фронтенда и бэкенда
+EXPOSE 3000 5000
 
-# Команда для запуска приложения
-CMD ["npm", "start"]
+# Запускаем сервер
+CMD ["node", "server.js"]
