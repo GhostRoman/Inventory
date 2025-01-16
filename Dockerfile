@@ -2,7 +2,7 @@
 FROM node:18-alpine
 
 # Устанавливаем рабочую директорию
-WORKDIR /app
+WORKDIR /inventory
 
 # Копируем package.json и package-lock.json для фронтенда
 COPY package*.json ./
