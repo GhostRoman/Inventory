@@ -1,24 +1,33 @@
-# Базовый образ Node.js
-FROM node:18-alpine
+# 1. Базовый образ для сборки фронтенда (Vite + React)
+FROM node:18-alpine AS build
 
-# Устанавливаем рабочую директорию
-WORKDIR /inventory
+# Рабочая директория
+WORKDIR /app
 
-# Копируем package.json и package-lock.json для фронтенда
+# Устанавливаем зависимости
 COPY package*.json ./
-
-# Устанавливаем зависимости фронтенда
 RUN npm install
 
-# Копируем фронтенд и бэкенд в контейнер
+# Копируем проект и собираем фронтенд
 COPY . .
-COPY server/package*.json ./server/
+RUN npm run build
 
-# Устанавливаем зависимости бэкенда
-RUN cd server && npm install
+# 2. Базовый образ для запуска Node.js сервера
+FROM node:18-alpine
 
-# Открываем порты (3000 - фронт, 5000 - бэк)
-EXPOSE 3000 5000
+# Рабочая директория
+WORKDIR /app
 
-# Запускаем фронтенд и бэкенд одновременно
-CMD ["npm", "start"]
+# Устанавливаем зависимости только для сервера
+COPY package*.json ./
+RUN npm install --omit=dev
+
+# Копируем сборку фронтенда и сервер
+COPY --from=build /app/dist ./dist
+COPY server.js .
+
+# Открываем порт (сервер)
+EXPOSE 3000
+
+# Запуск сервера
+CMD ["node", "server.js"]
