@@ -13,7 +13,7 @@ export default function TopMenu() {
       setCurrentTime(new Date());
     }, 1000);
 
-    const socket = io('http://127.0.0.1:3000', {
+    const socket = io('https://inventory-q784.onrender.com', {
       transports: ['websocket'],
     });
 
