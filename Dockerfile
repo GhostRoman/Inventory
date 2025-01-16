@@ -15,7 +15,7 @@ FROM node:18
 WORKDIR /app
 
 # Копируем сервер и собранный фронтенд
-COPY server server/
+COPY server src/
 COPY --from=build /app/dist ./dist
 COPY package.json package-lock.json ./
 RUN npm install --only=production
