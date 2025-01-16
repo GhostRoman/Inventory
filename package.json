@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && node server.js",
+    "client": "npm run dev",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -12,6 +15,7 @@
   "dependencies": {
     "@types/socket.io-client": "^3.0.0",
     "animate.css": "^4.1.1",
+    "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "express": "^4.21.2",
