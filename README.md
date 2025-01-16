@@ -7,12 +7,18 @@
 ## Установка
 
 1. Перейдите в директорию проекта:
-   cd project
+   
+   cd Inventory-master
 2. Установите зависимости:
+   
    npm install
 3. Запуск проекта:
+   
    node server.js
+   
    npm run dev
+
+4. Открываем путь в браузере: http://localhost:5173/
 
 ## Структура проекта
 
