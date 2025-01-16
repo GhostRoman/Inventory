@@ -1,9 +1,10 @@
 module.exports = {
   content: [
-    './src/**/*.{html,js,ts,jsx,tsx}', // Добавьте пути к вашим компонентам
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {},
   },
+  darkMode: 'class', // Включение класса для темного режима
   plugins: [],
-};
+}

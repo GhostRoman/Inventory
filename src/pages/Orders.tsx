@@ -8,7 +8,6 @@ import 'animate.css';
 
 // Компонент для управления заказами
 export default function Orders() {
-  // Определение состояний для выбранного и удаляемого чека, строки поиска и списка чеков
   const [selectedReceipt, setSelectedReceipt] = useState<string | null>(null);
   const [deleteReceipt, setDeleteReceipt] = useState<Receipt | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -97,20 +96,20 @@ export default function Orders() {
   );
 
   return (
-      <div className="flex-1 bg-gray-50 p-6 flex flex-col lg:flex-row">
+      <div className="flex-1 bg-gray-50 dark:bg-gray-900 p-6 flex flex-col lg:flex-row">
         {/* Панель слева: список заказов */}
         <div className="w-full lg:w-2/3 space-y-4">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold">Заказы / {filteredReceipts.length}</h1>
+            <h1 className="text-2xl font-semibold dark:text-gray-200">Заказы / {filteredReceipts.length}</h1>
             <form onSubmit={(e) => e.preventDefault()} className="flex items-center gap-2">
               <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Поиск заказов"
-                  className="border rounded-lg px-4 py-2 focus:outline-none"
+                  className="border rounded-lg px-4 py-2 focus:outline-none dark:bg-gray-700 dark:text-gray-200"
               />
-              <button type="submit" className="text-gray-600 hover:text-gray-800">
+              <button type="submit" className="text-gray-600 dark:text-gray-200 hover:text-gray-800">
                 <Search size={20} />
               </button>
             </form>
@@ -120,30 +119,30 @@ export default function Orders() {
           <TransitionGroup>
             {filteredReceipts.map((receipt) => (
                 <CSSTransition key={receipt.id} timeout={500} classNames="animate__animated animate__fadeIn">
-                  <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
+                  <div className="bg-white dark:bg-gray-800 mb-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
                     <div
-                        className="p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50"
+                        className="p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                         onClick={() => setSelectedReceipt(selectedReceipt === receipt ? null : receipt.id)}
                     >
                       <div className="flex items-center gap-4">
                         <ChevronRight size={20} className={`transform transition-transform ${selectedReceipt === receipt.id ? 'rotate-90' : ''}`} />
                         <div>
-                          <h3 className="font-medium">{receipt.name}</h3>
-                          <p className="text-sm text-gray-500">{receipt.products.length} products</p>
+                          <h3 className="font-medium dark:text-gray-200">{receipt.name}</h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{receipt.products.length} products</p>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-6 text-right">
                         <div>
-                          <div>{format(receipt.createdAt, 'dd/MM/yyyy')}</div>
-                          <div className="text-sm text-gray-500">{format(receipt.createdAt, 'dd MMM yyyy')}</div>
+                          <div className="dark:text-gray-200">{format(receipt.createdAt, 'dd/MM/yyyy')}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{format(receipt.createdAt, 'dd MMM yyyy')}</div>
                         </div>
                         <div>
-                          <div>${receipt.totalAmount.toFixed(2)}</div>
-                          <div className="text-sm text-gray-500">{(receipt.totalAmount * 30).toFixed(2)} UAH</div>
+                          <div className="dark:text-gray-200">${receipt.totalAmount.toFixed(2)}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{(receipt.totalAmount * 30).toFixed(2)} UAH</div>
                         </div>
-                        <button onClick={(e) => { e.stopPropagation(); handleDelete(receipt); }} className="p-2 hover:bg-gray-100 rounded-lg">
-                          <Trash2 size={20} className="text-gray-500" />
+                        <button onClick={(e) => { e.stopPropagation(); handleDelete(receipt); }} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg">
+                          <Trash2 size={20} className="text-gray-500 dark:text-gray-400" />
                         </button>
                       </div>
                     </div>
@@ -155,10 +154,10 @@ export default function Orders() {
 
         {/* Панель справа: детали заказа */}
         {selectedReceipt && (
-            <div className="w-full lg:w-1/3 bg-white rounded-lg shadow p-6 ml-4">
+            <div className="w-full lg:w-1/3 bg-white dark:bg-gray-800 rounded-lg shadow p-6 ml-4">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Детали заказа</h2>
-                <button onClick={() => setSelectedReceipt(null)} className="text-gray-500 hover:text-gray-700">
+                <h2 className="text-xl font-semibold dark:text-gray-200">Детали заказа</h2>
+                <button onClick={() => setSelectedReceipt(null)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                   <X size={20} />
                 </button>
               </div>
@@ -169,8 +168,8 @@ export default function Orders() {
                         <div key={product.id} className="flex items-center gap-4">
                           <img src={product.image} alt={product.name} className="w-12 h-12 object-cover" />
                           <div>
-                            <div className="font-medium">{product.name}</div>
-                            <div className="text-sm text-gray-500">{product.serialNumber}</div>
+                            <div className="font-medium dark:text-gray-200">{product.name}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">{product.serialNumber}</div>
                           </div>
                         </div>
                     ))}

@@ -3,14 +3,11 @@ import {Product} from '../types';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import 'animate.css';
 
-// Компонент для отображения и управления списком продуктов
 export default function Products() {
-  // Определение состояний для типа продукта, строки поиска, порядка сортировки и списка продуктов
   const [selectedType, setSelectedType] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [products, setProducts] = useState<Product[]>([
-    // Примеры продуктов
     {
       id: '1',
       name: 'Gigabyte Technology X58-USB3',
@@ -68,7 +65,6 @@ export default function Products() {
     }
   ]);
 
-  // Определение состояния для модального окна и нового продукта
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProduct, setNewProduct] = useState<Product>({
     id: '',
@@ -82,7 +78,6 @@ export default function Products() {
     image: ''
   });
 
-  // Сортировка и фильтрация продуктов на основе состояния
   const sortedProducts = [...products].sort((a, b) => sortOrder === 'asc' ? a.price - b.price : b.price - a.price);
   const filteredProducts = sortedProducts.filter(product =>
       (selectedType === 'all' || product.type === selectedType) &&
@@ -90,7 +85,6 @@ export default function Products() {
           product.serialNumber.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  // Обработка добавления нового продукта
   const handleAddProduct = () => {
     setProducts([...products, { ...newProduct, id: Date.now().toString() }]);
     setIsModalOpen(false);
@@ -108,9 +102,9 @@ export default function Products() {
   };
 
   return (
-      <div className="flex-1 bg-gray-50 p-6">
+      <div className="flex-1 bg-gray-50 dark:bg-gray-900 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-semibold">Продукты / {filteredProducts.length}</h1>
+          <h1 className="text-2xl font-semibold dark:text-gray-200">Продукты / {filteredProducts.length}</h1>
           <div className="flex gap-4 items-center">
             <button
                 onClick={() => setIsModalOpen(true)}
@@ -121,7 +115,7 @@ export default function Products() {
             <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="border rounded-lg px-4 py-2 text-sm"
+                className="border rounded-lg px-4 py-2 text-sm dark:bg-gray-700 dark:text-gray-200"
             >
               {['all', ...new Set(products.map(p => p.type))].map(type => (
                   <option key={type} value={type}>{type === 'all' ? 'Все' : type}</option>
@@ -132,11 +126,11 @@ export default function Products() {
                 placeholder="Поиск..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="border rounded-lg px-4 py-2 text-sm w-48"
+                className="border rounded-lg px-4 py-2 text-sm w-48 dark:bg-gray-700 dark:text-gray-200"
             />
             <button
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                className="bg-gray-300 px-4 py-2 rounded-lg text-sm"
+                className="bg-gray-300 px-4 py-2 rounded-lg text-sm dark:bg-gray-700 dark:text-gray-200"
             >
               Сортировать по цене ({sortOrder === 'asc' ? '↑' : '↓'})
             </button>
@@ -145,46 +139,46 @@ export default function Products() {
         <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map(product => (
               <CSSTransition key={product.id} timeout={500} classNames="animate__animated animate__fadeIn">
-                <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
                   <img
                       src={product.image}
                       alt={product.name}
                       className="h-40 object-contain mx-auto mb-4"
                   />
-                  <h2 className="mt-4 text-xl font-semibold">{product.name}</h2>
-                  <p className="text-sm text-gray-500">{product.type}</p>
+                  <h2 className="mt-4 text-xl font-semibold dark:text-gray-200">{product.name}</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{product.type}</p>
                   <p className={`text-sm ${product.status === 'available' ? 'text-green-500' : 'text-red-500'}`}>
                     {product.status === 'available' ? 'Доступен' : 'В ремонте'}
                   </p>
-                  <p className="text-sm">Гарантия до: {product.warrantyEnd.toLocaleDateString()}</p>
-                  <p className="font-semibold">Цена: {product.price.toLocaleString()} UAH</p>
-                  <p className="text-sm">Серийный номер: {product.serialNumber}</p>
+                  <p className="text-sm dark:text-gray-200">Гарантия до: {product.warrantyEnd.toLocaleDateString()}</p>
+                  <p className="font-semibold dark:text-gray-200">Цена: {product.price.toLocaleString()} UAH</p>
+                  <p className="text-sm dark:text-gray-200">Серийный номер: {product.serialNumber}</p>
                 </div>
               </CSSTransition>
           ))}
         </TransitionGroup>
         {isModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 className="text-xl font-semibold mb-4">Добавить продукт</h2>
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+                <h2 className="text-xl font-semibold mb-4 dark:text-gray-200">Добавить продукт</h2>
                 <input
                     placeholder="Название"
                     value={newProduct.name}
                     onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                    className="w-full border mb-2 px-3 py-2 rounded-lg"
+                    className="w-full border mb-2 px-3 py-2 rounded-lg dark:bg-gray-700 dark:text-gray-200"
                 />
                 <input
                     placeholder="Тип"
                     value={newProduct.type}
                     onChange={(e) => setNewProduct({ ...newProduct, type: e.target.value })}
-                    className="w-full border mb-2 px-3 py-2 rounded-lg"
+                    className="w-full border mb-2 px-3 py-2 rounded-lg dark:bg-gray-700 dark:text-gray-200"
                 />
                 <input
                     placeholder="Цена"
                     type="number"
                     value={newProduct.price}
                     onChange={(e) => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
-                    className="w-full border mb-2 px-3 py-2 rounded-lg"
+                    className="w-full border mb-2 px-3 py-2 rounded-lg dark:bg-gray-700 dark:text-gray-200"
                 />
                 <button
                     onClick={handleAddProduct}
