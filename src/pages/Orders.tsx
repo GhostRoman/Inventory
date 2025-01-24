@@ -1,8 +1,8 @@
-import {useState} from 'react';
-import {format} from 'date-fns';
-import {ChevronRight, Search, Trash2, X} from 'lucide-react';
-import {CSSTransition, TransitionGroup} from 'react-transition-group';
-import {Receipt} from '../types';
+import { useState, useMemo } from 'react';
+import { format } from 'date-fns';
+import { ChevronRight, Search, Trash2, X } from 'lucide-react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Product, Receipt } from '../types';
 import DeleteConfirmation from '../components/DeleteConfirmation';
 import 'animate.css';
 
@@ -75,7 +75,7 @@ export default function Orders() {
     }
   ]);
 
-  // Удаление чека
+  // Устанавливает чек для удаления, вызывая модальное окно подтверждения
   const handleDelete = (receipt: Receipt) => {
     setDeleteReceipt(receipt);
   };
@@ -90,10 +90,11 @@ export default function Orders() {
   };
 
   // Фильтрация чеков на основе строки поиска
-  const filteredReceipts = receipts.filter(receipt =>
+  const filteredReceipts = useMemo(() => 
+    receipts.filter((receipt: Receipt) =>
       receipt.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       receipt.products.some(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+    ), [searchQuery, receipts]);
 
   return (
       <div className="flex-1 bg-gray-50 dark:bg-gray-900 p-6 flex flex-col lg:flex-row">
@@ -122,7 +123,7 @@ export default function Orders() {
                   <div className="bg-white dark:bg-gray-800 mb-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
                     <div
                         className="p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
-                        onClick={() => setSelectedReceipt(selectedReceipt === receipt ? null : receipt.id)}
+                        onClick={() => setSelectedReceipt(selectedReceipt === receipt.id ? null : receipt.id)}
                     >
                       <div className="flex items-center gap-4">
                         <ChevronRight size={20} className={`transform transition-transform ${selectedReceipt === receipt.id ? 'rotate-90' : ''}`} />
@@ -163,8 +164,8 @@ export default function Orders() {
               </div>
               <div className="space-y-4">
                 {filteredReceipts
-                    .find((receipt) => receipt.id === selectedReceipt)
-                    ?.products.map((product) => (
+                    .find((receipt: Receipt) => receipt.id === selectedReceipt)
+                    ?.products.map((product: Product) => (
                         <div key={product.id} className="flex items-center gap-4">
                           <img src={product.image} alt={product.name} className="w-12 h-12 object-cover" />
                           <div>
